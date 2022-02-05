@@ -16,11 +16,14 @@ function tallyTraits(collection) {
       traitsMap[traitKey] = traitsMap[traitKey] + 1;
     }
   }
+  const sortedTraitsList = Object.entries(traitsMap).sort(
+    (a, b) => a[1] - b[1]
+  );
 
   console.timeEnd("Done tallying traits");
   console.log("-------");
-  log(Object.entries(traitsMap).join("\n"));
-  return traitsMap;
+  log(sortedTraitsList);
+  return { sortedTraitsList, traitsMap };
 }
 
 function calcRarity(projectName, collection, traitsMap) {
@@ -80,12 +83,12 @@ function getTopRarity(rarityMap, percent) {
 }
 
 function getRarity(projectName, collection) {
-  const atrCount = tallyTraits(collection);
-  const rarity = calcRarity(projectName, collection, atrCount);
+  const { traitsMap, sortedTraitsList } = tallyTraits(collection);
+  const rarity = calcRarity(projectName, collection, traitsMap);
 
   // const top20 = getTopRarity(rarity, 20);
   return {
-    atrCount,
+    sortedTraitsList,
     rarity,
     // top20,
   };

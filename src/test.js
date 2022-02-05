@@ -1,17 +1,21 @@
 // WARN: do not run this if you haven't scraped and calculate rarity
-
+const fs = require("fs");
 const process = require("process");
 // const { PROJECT_NAME, COLLECTION_SIZE, BASE_URI } = require("./config.json");
 const { sortMapDesc } = require("./utils/helpers");
 
 const collection = require(`../scraped/CryptoBatz/collection.json`);
-const rarity = require(`../scraped/CryptoBatz/rarity.json`);
+const { getRarity } = require("./getRarity");
 
-console.log(rarity.rarity.length);
+// console.log(collection);
+const rarity = JSON.stringify(getRarity("CryptoBatz", collection));
 
-process.stdout.write("\x1B[?25l");
-process.stdout.write("[");
-for (let i = 0; i < 50; i++) {
-  process.stdout.write("-");
-}
-process.stdout.write("]");
+fs.writeFile(`../scraped/CryptoBatz/rarity.json`, rarity, (err) => {
+  if (err) {
+    console.log("Saving rarity failed\n", err);
+  } else {
+    console.log(
+      `Rarity successfully saved under "../scraped/CryptoBatz/rarity.json"`
+    );
+  }
+});

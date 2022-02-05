@@ -48,7 +48,7 @@ yargsInteractive()
      * No more than 10 parallel, spaced at least 100ms apart
      * These are typical fair-use limitations of public APIs
      **/
-    const queue = new Queue(1000, 10);
+    const queue = new Queue(2000, 10);
     let p = [];
     let collection = [];
 
@@ -118,7 +118,7 @@ yargsInteractive()
           console.log("Saving rarity failed\n", err);
         } else {
           console.log(
-            `Rarity successfully saved under "../scraped/${PROJECT_NAME}/collection.json"`
+            `Rarity successfully saved under "../scraped/${PROJECT_NAME}/rarity.json"`
           );
         }
       });
