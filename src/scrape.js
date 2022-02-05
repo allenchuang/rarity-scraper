@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+const process = require("process");
+const rdl = require("readline");
 const fetch = require("node-fetch");
 const Queue = require("async-await-queue");
 const CONFIG = require("./config.json");
@@ -50,12 +52,15 @@ yargsInteractive()
     let p = [];
     let collection = [];
 
+    console.clear();
+    process.stdout.write("\x1B[?25l");
+
     async function download(i, baseUrl, PROJECT_NAME, queue) {
       /* Generate a queue ID */
       const uid = Symbol();
       await queue.wait(uid, 0);
       try {
-        log(`Downloaded ${PROJECT_NAME} #${i}...`);
+        process.stdout.write(`Downloaded ${PROJECT_NAME} #${i}...\r`);
         const data = await fetch(`${baseUrl}/${i}`);
         const json = await data.json();
 
@@ -72,8 +77,8 @@ yargsInteractive()
     }
 
     async function runParallel(baseUrl, totalSupply) {
-      console.log("Scraping Metadata...");
-      console.log("This may take a while please be patient...");
+      console.log("\nScraping Metadata...");
+      console.log("This may take a while please be patient...😉");
       console.time("Total time taken");
       console.time("Done scraping");
       for (let i = 1; i <= totalSupply; i++) {
@@ -83,6 +88,7 @@ yargsInteractive()
 
       await Promise.allSettled(p);
       // All downloads done!
+      console.log("\n");
       console.timeEnd("Done scraping");
       console.log(`${collection.length} items scraped`);
       console.log("-------");
@@ -99,7 +105,7 @@ yargsInteractive()
             console.log("Saving scraped collection failed\n", err);
           } else {
             console.log(
-              `Collection successfully saved under "scraped/${PROJECT_NAME}/collection.json`
+              `Collection successfully saved under "../scraped/${PROJECT_NAME}/collection".json`
             );
           }
         }
@@ -112,7 +118,7 @@ yargsInteractive()
           console.log("Saving rarity failed\n", err);
         } else {
           console.log(
-            `Rarity successfully saved under "scraped/${PROJECT_NAME}/collection.json`
+            `Rarity successfully saved under "../scraped/${PROJECT_NAME}/collection.json"`
           );
         }
       });
