@@ -35,6 +35,11 @@ const options = {
     default: CONFIG.STARTING_INDEX,
     describe: "Enter start index",
   },
+  // hasJsonPrefix: {
+  //   type: "option",
+  //   default: CONFIG.JSON_SUFFIX,
+  //   describe: "Has JSON?",
+  // },
 };
 
 yargsInteractive()
@@ -60,6 +65,7 @@ yargsInteractive()
       const collection = await runParallel(
         PROJECT_NAME,
         BASE_URI,
+        // JSON_SUFFIX,
         STARTING_INDEX,
         COLLECTION_SIZE
       );

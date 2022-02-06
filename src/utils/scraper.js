@@ -7,16 +7,17 @@ const CONFIG = require("../config.json");
 const { setHttp, isUrl, log, time, timeEnd } = require("./helpers");
 const { getRarity } = require("../getRarity");
 
-async function download(i, baseUrl, projectName, queue, collection) {
+async function download(i, baseUrl, jsonSuffix, projectName, queue, collection) {
   /* Generate a queue ID */
   const uid = Symbol();
   await queue.wait(uid, 0);
   try {
     process.stdout.write(`Downloaded ${projectName} #${i}...\r`);
-    const data = await fetch(`${baseUrl}/${i}`);
+    // console.log({ baseUrl, i, jsonSuffix })
+    const data = await fetch(`${baseUrl}/${i}${jsonSuffix ? '.json' : ''}`);
     const json = await data.json();
 
-    // console.log({ json });
+    console.log({ json });
     if (!json.attributes) {
       throw Error("no attributes");
       return;
@@ -34,12 +35,12 @@ async function download(i, baseUrl, projectName, queue, collection) {
   }
 }
 
-async function runParallel(projectName, baseUrl, startingIndex, totalSupply) {
+async function runParallel(projectName, baseUrl, jsonSuffix, startingIndex, totalSupply) {
   /**
    * No more than 10 parallel, spaced at least 100ms apart
    * These are typical fair-use limitations of public APIs
    **/
-  const queue = new Queue(2000, 10);
+  const queue = new Queue(10, 200);
   let p = [];
   let collection = [];
 
@@ -50,7 +51,7 @@ async function runParallel(projectName, baseUrl, startingIndex, totalSupply) {
   const endIndex = startingIndex === 0 ? totalSupply - 1 : totalSupply;
   for (let i = startingIndex; i <= endIndex; i++) {
     /* Each iteration is an anonymous async function */
-    p.push(download(i, baseUrl, projectName, queue, collection));
+    p.push(download(i, baseUrl, jsonSuffix, projectName, queue, collection));
   }
 
   await Promise.allSettled(p);
