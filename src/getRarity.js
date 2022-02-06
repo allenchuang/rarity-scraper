@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { log, time, timeEnd, sortMapDesc, roundTo } = require("./utils/helpers");
 
 function tallyTraits(collection) {
@@ -6,6 +7,7 @@ function tallyTraits(collection) {
   const traitsMap = {};
   for (item of collection) {
     const itemAttributes = item.attributes;
+    if (!itemAttributes) continue;
     for (trait of itemAttributes) {
       const traitType = trait.trait_type;
       const traitValue = trait.value;
@@ -36,6 +38,8 @@ function calcRarity(projectName, collection, traitsMap) {
     const itemId = item._uid;
     const itemAttributes = item.attributes;
     log(`Calculating rarity for ${projectName} #${itemId}...`);
+
+    if (!itemAttributes) continue;
     // loop through each trait and calc rarity for each trait
     let itemRarityScore = 0;
     for (trait of itemAttributes) {
@@ -86,12 +90,26 @@ function getRarity(projectName, collection) {
   const { traitsMap, sortedTraitsList } = tallyTraits(collection);
   const rarity = calcRarity(projectName, collection, traitsMap);
 
-  // const top20 = getTopRarity(rarity, 20);
-  return {
+  const result = {
     sortedTraitsList,
     rarity,
-    // top20,
   };
+
+  fs.writeFile(
+    `../scraped/${projectName}/rarity.json`,
+    JSON.stringify(result),
+    (err) => {
+      if (err) {
+        console.log("Saving rarity failed\n", err);
+      } else {
+        console.log(
+          `Rarity successfully saved under "../scraped/${projectName}/rarity.json"`
+        );
+      }
+    }
+  );
+
+  return result;
 }
 
 module.exports = {

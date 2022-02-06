@@ -1,6 +1,7 @@
 {
-  "PROJECT_NAME": "CryptoBatz",
-  "COLLECTION_SIZE": 9666,
-  "BASE_URI": "https://bafybeiejgckbr7xltffsbb2mppe5fwbwxsbjgl4qgde6bwjcmjladsg4ze.ipfs.dweb.link/",
+  "PROJECT_NAME": "Beepos",
+  "COLLECTION_SIZE": 10,
+  "BASE_URI": "https://beepos.fun/api/beepos/",
+  "STARTING_INDEX": 1,
   "showLogs": false
 }

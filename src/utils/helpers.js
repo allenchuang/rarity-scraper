@@ -40,23 +40,22 @@ function sortMapAsc(map) {
 function roundTo(value, decimals) {
   return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 }
-// // sort by value
-// const sortMapDesc = new Map([...myMap.entries()].sort((a, b) => b[1] - a[1]));
-// console.log(mapSort1);
-// // Map(4) {"c" => 4, "a" => 3, "d" => 2, "b" => 1}
 
-// const sortMapAsc = new Map([...myMap.entries()].sort((a, b) => a[1] - b[1]));
-// console.log(mapSort2);
-// // Map(4) {"b" => 1, "d" => 2, "a" => 3, "c" => 4}
 
-// // sort by key
-// const sortMapAsc = new Map([...myMap.entries()].sort());
-// console.log(mapSort3);
-// // Map(4) {"a" => 3, "b" => 1, "c" => 4, "d" => 2}
+function isMetadataValid(data, sampleData) {
+  let isValid = false;
 
-// const mapSort4 = new Map([...myMap.entries()].reverse());
-// console.log(mapSort4);
-// // Map(4) {"d" => 2, "b" => 1, "c" => 4, "a" => 3}
+  // console.log({ data, sampleData })
+  if (data.image !== sampleData.image) {
+    isValid = true;
+  } else if (Object.keys(data).length !== Object.keys(data).length) {
+    isValid = true;
+  } else if (data.attributes && sampleData.attributes && data.attributes.length > sampleData?.attributes?.length) {
+    isValid = true;
+  }
+
+  return isValid;
+}
 
 module.exports = {
   log,
@@ -67,4 +66,5 @@ module.exports = {
   sortMapAsc,
   sortMapDesc,
   roundTo,
+  isMetadataValid
 };
