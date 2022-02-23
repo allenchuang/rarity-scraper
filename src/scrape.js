@@ -30,23 +30,28 @@ const options = {
     default: CONFIG.BASE_URI,
     describe: "Enter baseURI address",
   },
-  startingIndex: {
+  startIndex: {
     type: "input",
-    default: CONFIG.STARTING_INDEX,
+    default: CONFIG.START_INDEX,
     describe: "Enter start index",
   },
-  // hasJsonPrefix: {
-  //   type: "option",
-  //   default: CONFIG.JSON_SUFFIX,
-  //   describe: "Has JSON?",
-  // },
+  endIndex: {
+    type: "input",
+    default: CONFIG.END_INDEX,
+    describe: "Enter start index",
+  },
+  hasJsonPrefix: {
+    type: "option",
+    default: CONFIG.JSON_SUFFIX,
+    describe: "Has JSON?",
+  },
 };
 
 yargsInteractive()
   .usage("$0 <command> [args]")
   .interactive(options)
   .then(
-    async ({ projectName, collectionSize, tokenURI, startingIndex = 1 }) => {
+    async ({ projectName, collectionSize, tokenURI, startIndex = 1, endIndex = 1 }) => {
       console.time("Total time taken");
       if (!isUrl(tokenURI)) {
         throw Error("Please enter a valid baseURI");
@@ -56,7 +61,8 @@ yargsInteractive()
       const PROJECT_NAME = projectName;
       const COLLECTION_SIZE = collectionSize;
       const BASE_URI = setHttp(tokenURI).replace(/\/$/, "");
-      const STARTING_INDEX = startingIndex;
+      const START_INDEX = startIndex;
+      const END_INDEX = endIndex;
 
       console.clear();
       process.stdout.write("\x1B[?25l");
@@ -66,7 +72,7 @@ yargsInteractive()
         PROJECT_NAME,
         BASE_URI,
         // JSON_SUFFIX,
-        STARTING_INDEX,
+        START_INDEX,
         COLLECTION_SIZE
       );
 

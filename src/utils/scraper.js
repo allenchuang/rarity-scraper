@@ -35,12 +35,12 @@ async function download(i, baseUrl, jsonSuffix, projectName, queue, collection) 
   }
 }
 
-async function runParallel(projectName, baseUrl, jsonSuffix, startingIndex, totalSupply) {
+async function runParallel(projectName, baseUrl, jsonSuffix, startIndex, endIndex, totalSupply) {
   /**
    * No more than 10 parallel, spaced at least 100ms apart
    * These are typical fair-use limitations of public APIs
    **/
-  const queue = new Queue(10, 200);
+  const queue = new Queue(10, 100);
   let p = [];
   let collection = [];
 
@@ -48,8 +48,8 @@ async function runParallel(projectName, baseUrl, jsonSuffix, startingIndex, tota
   console.log("This may take a while please be patient...😉");
   console.time("Done scraping");
 
-  const endIndex = startingIndex === 0 ? totalSupply - 1 : totalSupply;
-  for (let i = startingIndex; i <= endIndex; i++) {
+  // const endIndex = startIndex === 0 ? totalSupply - 1 : totalSupply;
+  for (let i = startIndex; i <= endIndex; i++) {
     /* Each iteration is an anonymous async function */
     p.push(download(i, baseUrl, jsonSuffix, projectName, queue, collection));
   }

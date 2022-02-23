@@ -1,7 +1,9 @@
 {
-  "PROJECT_NAME": "Beepos",
-  "COLLECTION_SIZE": 10,
-  "BASE_URI": "https://beepos.fun/api/beepos/",
-  "STARTING_INDEX": 1,
-  "showLogs": false
+  "PROJECT_NAME": "Lives of Asuna",
+  "COLLECTION_SIZE": 4444,
+  "START_INDEX": 1,
+  "END_INDEX": 4444,
+  "BASE_URI": "https://bafybeigodn43khc4mee5y6x7qzdp7rvk4zvnqco66ryzswl3rotcopjnuy.ipfs.dweb.link/",
+  "showLogs": false,
+  "JSON_SUFFIX": true
 }
